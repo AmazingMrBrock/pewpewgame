@@ -44,7 +44,7 @@ public static PlayerScript instance;
 			DirectionalMovement.instance.Move(horizontalAxis, verticalAxis, gameObject, speedMax);
 		}
 		if(fire1 != 0){
-			Action.instance.Attack(2.4f, 5f, 1f, .8f, 10f, "ENEMY", player, attackSound);
+			Action.instance.Attack(new Vector3(2.4f, 5f, 1f), new Vector3(.8f, 10f), "ENEMY", player, attackSound);
 //			Debug.Log("Attack fired by player");
 		}
 	}

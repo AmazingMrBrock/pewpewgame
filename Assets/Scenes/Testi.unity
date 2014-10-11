@@ -164,7 +164,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 677bc800ed3ce27439c8bb84fa9d3907, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -13.1664581
+      value: -8.75726032
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 677bc800ed3ce27439c8bb84fa9d3907, type: 2}
       propertyPath: m_LocalPosition.y
@@ -783,46 +783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a02d0f612a241b293c0da4f82b712c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Properties:
-    Properties: []
-    Groups: []
-    Hidden: 
-  Links:
-    Links:
-    - LIIF: -1243743052
-      InstanceTarget: {fileID: 455450877}
-    - LIIF: -313216865
-      InstanceTarget: {fileID: 455450879}
-    - LIIF: -2042108643
-      InstanceTarget: {fileID: 455450878}
-    - LIIF: 175922242
-      InstanceTarget: {fileID: 455450880}
-    - LIIF: -833352949
-      InstanceTarget: {fileID: 455450884}
-    - LIIF: -544634642
-      InstanceTarget: {fileID: 455450883}
-    - LIIF: -71044691
-      InstanceTarget: {fileID: 455450882}
-    - LIIF: -815542212
-      InstanceTarget: {fileID: 455450881}
-    - LIIF: -1876598840
-      InstanceTarget: {fileID: 455450875}
-  Modifications:
-    Modificated:
-    - Object: {fileID: 455450884}
-      ObjeckLink: -833352949
-      PropertyPath: 6d5f4c6f63616c506f736974696f6e
-      Mode: 0
-    - Object: {fileID: 455450884}
-      ObjeckLink: -833352949
-      PropertyPath: 6d5f526f6f744f72646572
-      Mode: 0
-    NonPrefabObjects: []
-    NonPrefabComponents: []
-    RemovedObjects: 
-    TransformParentChanges: []
-  ParentPrefabGUID: 
-  PrefabGUID: 3637376263383030656433636532373433396338626238346661396433393037
 --- !u!114 &455450878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -913,7 +873,7 @@ Transform:
   m_PrefabInternal: {fileID: 62896965}
   m_GameObject: {fileID: 455450875}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.1664581, y: -7.15676975, z: 0}
+  m_LocalPosition: {x: -8.75726032, y: -7.15676975, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2752,46 +2712,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a02d0f612a241b293c0da4f82b712c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Properties:
-    Properties: []
-    Groups: []
-    Hidden: 
-  Links:
-    Links:
-    - LIIF: -1243743052
-      InstanceTarget: {fileID: 1693088387}
-    - LIIF: -313216865
-      InstanceTarget: {fileID: 1693088389}
-    - LIIF: -2042108643
-      InstanceTarget: {fileID: 1693088388}
-    - LIIF: 175922242
-      InstanceTarget: {fileID: 1693088390}
-    - LIIF: -833352949
-      InstanceTarget: {fileID: 1693088394}
-    - LIIF: -544634642
-      InstanceTarget: {fileID: 1693088393}
-    - LIIF: -71044691
-      InstanceTarget: {fileID: 1693088392}
-    - LIIF: -815542212
-      InstanceTarget: {fileID: 1693088391}
-    - LIIF: -1876598840
-      InstanceTarget: {fileID: 1693088385}
-  Modifications:
-    Modificated:
-    - Object: {fileID: 1693088394}
-      ObjeckLink: -833352949
-      PropertyPath: 6d5f4c6f63616c506f736974696f6e
-      Mode: 0
-    - Object: {fileID: 1693088394}
-      ObjeckLink: -833352949
-      PropertyPath: 6d5f526f6f744f72646572
-      Mode: 0
-    NonPrefabObjects: []
-    NonPrefabComponents: []
-    RemovedObjects: 
-    TransformParentChanges: []
-  ParentPrefabGUID: 
-  PrefabGUID: 3637376263383030656433636532373433396338626238346661396433393037
 --- !u!114 &1693088388
 MonoBehaviour:
   m_ObjectHideFlags: 0

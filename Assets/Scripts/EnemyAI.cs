@@ -37,6 +37,8 @@ public class EnemyAI : UnitTemplate {
 	// Update is called once per frame
 	void FixedUpdate () {
 		velocity = new Vector2(Mathf.Max(velocity.x = acceleration, -speedMax), Mathf.Max(velocity.y = acceleration, -speedMax));
+		VisionControl();
+		ObjRecognition();
 	}
 
 	void VisionControl(){
@@ -45,31 +47,9 @@ public class EnemyAI : UnitTemplate {
 //		Debug.Log ("Distance Info: " + distanceTo + " Target Info: " + targetInfo);
 	}
 
-	void WalkCycle(){
-		VisionControl();
-	}
+	void ObjRecognition(){
+		string unitName = targetInfo.transform.name;
 
-	GameObject CharacterWatcher(){//targetInfo is watched, and returns any gameobject that is a character.
-
-	}
-
-	void NavWatcher(){//returns target info if game object is a wall, door, pit, etc. 
-
-	}
-
-	void ItemWatcher(){//returns target info if gameobject is an item. Checks if its weapon, health, other, etc
-
-	} 
-
-	int StatChecker(){//Checks units own health, energy, status, etc
-
-	}
-
-	void SelfClassChecker(){//checks units own class code to determine move set. May use dictionary for Move sets
-
-	}
-
-	void OtherClassChecker(){//Checks class of other characters to determine how to engage. Friend, foe, magic, melee, ranged, etc
-
+		Debug.Log ("target name: " + targetInfo.transform.name);
 	}
 }

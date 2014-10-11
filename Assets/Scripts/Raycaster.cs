@@ -131,9 +131,9 @@ public class Raycaster : MonoBehaviour {
 //		Debug.Log("Raycast fired NULL");
 		string targetLayer;
 //		Debug.Log ("target layer: " + targetLayer);
-		if(layer != "null"){
-			Physics.Raycast(origin, dir, out hitIn, 100, 1 << LayerMask.NameToLayer(layer)); 
-		}
+//		if(layer != "null"){
+//			Physics.Raycast(origin, dir, out hitIn, 100, 1 << LayerMask.NameToLayer(layer)); 
+//		}
 //		bool hit = hitIn.distance < 25? true : false;
 		Debug.DrawRay(origin, dir, Color.cyan);
 		return hitIn;

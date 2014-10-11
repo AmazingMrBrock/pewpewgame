@@ -58,12 +58,12 @@ public class Action : MonoBehaviour {
 				GameObject targetGo = targetHit.transform.gameObject;
 				Debug.Log("target.distance; " + targetHit.distance);
 //				Debug.Log("Attack fired");
-				if(targetHit.distance < range){
+				if(targetHit.distance < rangeDamageArea.x){
 					Debug.Log("Damage dealt");
 
-					targetGo.GetComponent<CurrentStats>().RecieveDamage(damage);
+					targetGo.GetComponent<CurrentStats>().RecieveDamage(rangeDamageArea.y);
 				}
-				StartCoroutine(ActionTimer(soundEffect, actionTime));
+				StartCoroutine(ActionTimer(soundEffect, timeDistanceDuration.x));
 //				Debug.Log ("Target gameobject is: " + targetGO);
 
 			}

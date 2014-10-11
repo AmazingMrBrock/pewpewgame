@@ -22,6 +22,8 @@ public class _Global_TODO_List_ : MonoBehaviour {
 	/// Go through all scripts and comment / document.
 	/// 
 	/// 
+	/// create a set of moves for various attacks.
+	/// 
 	/// BUGS:
 	/// 
 	/// 
