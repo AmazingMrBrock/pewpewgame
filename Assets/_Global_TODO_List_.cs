@@ -5,12 +5,6 @@ public class _Global_TODO_List_ : MonoBehaviour {
 
 	/// <summary>
 	/// TODO:
-	/// TESTING GIT
-	/// 
-	/// 
-	/// SET UP VERSION CONTROL // DONE
-	/// 
-	/// Go through code / project and create a general schedule by attaching dates to global TODO list entries. //DONE
 	/// 
 	/// Create playerai script that handles vision and targeting, interface elements, etc // fri oct 17
 	/// Create playercontrol Script to handle input. // fri oct 17
@@ -20,9 +14,8 @@ public class _Global_TODO_List_ : MonoBehaviour {
 	/// Look into adding a vector3 based movement system, to be able to set destination points easier. // wed oct 15
 	/// Work on actions needs activate, heal // wed oct 15
 	/// 
-	/// Reduce overloads //DONE
-	/// Reduce redundant methods
-	/// reduce redundant variables
+	/// Reduce redundant methods // soon
+	/// reduce redundant variables // soon
 	/// 
 	/// add bool modifiers to scripts to increase method function and diversity.
 	/// 
