@@ -6,7 +6,7 @@ public class _Global_TODO_List_ : MonoBehaviour {
 	/// <summary>
 	/// TODO:
 	/// 
-	/// SET UP VERSION CONTROL // mon oct 13
+	/// SET UP VERSION CONTROL // DONE
 	/// 
 	/// Go through code / project and create a general schedule by attaching dates to global TODO list entries. //DONE
 	/// 
