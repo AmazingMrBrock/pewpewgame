@@ -126,15 +126,7 @@ public class Raycaster : MonoBehaviour {
 	//The problem with attack is in here somewhere. 
 	RaycastHit RaycastFire(Vector2 dir, Vector2 origin, string layer){
 		RaycastHit hitIn;
-
 		Physics.Raycast(origin, dir, out hitIn, 100); 
-//		Debug.Log("Raycast fired NULL");
-		string targetLayer;
-//		Debug.Log ("target layer: " + targetLayer);
-//		if(layer != "null"){
-//			Physics.Raycast(origin, dir, out hitIn, 100, 1 << LayerMask.NameToLayer(layer)); 
-//		}
-//		bool hit = hitIn.distance < 25? true : false;
 		Debug.DrawRay(origin, dir, Color.cyan);
 		return hitIn;
 	}

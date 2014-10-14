@@ -42,6 +42,11 @@ public class DirectionalMovement : MonoBehaviour {
 				gO.rigidbody.velocity = new Vector2(Mathf.Sign(velocity.x) * maxSpeed, velocity.y);
 			}
 		}
+	}
+
+	public void MoveToPoint(Vector3 destination, ){
+		//Recieves a vector3 and travels the gameobject to that position.
 
 	}
+
 }

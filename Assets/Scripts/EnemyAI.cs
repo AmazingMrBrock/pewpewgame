@@ -25,7 +25,7 @@ public class EnemyAI : UnitTemplate {
 
 	float sightRange = 100;
 
-	Vector3 distanceTo;
+
 	RaycastHit targetInfo;
 
 
@@ -42,14 +42,19 @@ public class EnemyAI : UnitTemplate {
 	}
 
 	void VisionControl(){
-		distanceTo = Raycaster.instance.PointChecker("WALL", sightRange, gameObject);
+
 		targetInfo = Raycaster.instance.GetTarget("null", sightRange, gameObject);
 //		Debug.Log ("Distance Info: " + distanceTo + " Target Info: " + targetInfo);
 	}
 
 	void ObjRecognition(){
-		string unitName = targetInfo.transform.name;
+		//Checks whats under the target ray.
+		string objTag = targetInfo.transform.tag;
+		Debug.Log ("target name: " + targetInfo.transform.name + " Target tag: " + objTag);
 
-		Debug.Log ("target name: " + targetInfo.transform.name);
 	}
+
+
+
+
 }
