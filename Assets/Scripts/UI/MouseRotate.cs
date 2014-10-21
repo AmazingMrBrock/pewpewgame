@@ -23,7 +23,6 @@ public class MouseRotate : MonoBehaviour {
 	}
 
 	private void RotateToMouse(){   
-		// May have to scrap the raycast mouse rotator. Its kinda broken because of local / world space problems I don't know how to fix.
 		
 		//Grab the current mouse position on the screen
 		mousePosition = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y, Input.mousePosition.z - camera.transform.position.z));
@@ -35,7 +34,7 @@ public class MouseRotate : MonoBehaviour {
 		distanceFromObject = (Input.mousePosition - camera.WorldToScreenPoint(transform.position)).magnitude;
 		
 		//Move towards the mouse
-		rigidbody.AddForce(direction * speed * distanceFromObject * Time.deltaTime);
+//		rigidbody.AddForce(direction * speed * distanceFromObject * Time.deltaTime);
 		
 	}
 }

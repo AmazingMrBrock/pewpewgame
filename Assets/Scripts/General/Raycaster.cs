@@ -88,7 +88,7 @@ public class Raycaster : MonoBehaviour {
 		Vector3 origin = gO.transform.position;
 		RaycastHit newHit = RaycastFire(Vector3.up, origin, layer);
 //		Debug.Log("Target distance: " + newHit.distance + " hitDistance: " + hitDistance);
-		Debug.Log("Target name: " + newHit.collider);
+//		Debug.Log("Target name: " + newHit.collider);
 		return newHit;
 	}
 

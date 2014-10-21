@@ -44,9 +44,9 @@ public class DirectionalMovement : MonoBehaviour {
 		}
 	}
 
-	public void MoveToPoint(Vector3 destination, ){
+	public void MoveToPoint(Vector3 destination, float speed, GameObject gO){
 		//Recieves a vector3 and travels the gameobject to that position.
-
+		gO.transform.position = Vector3.Lerp(gO.transform.position, destination, speed);
 	}
 
 }
