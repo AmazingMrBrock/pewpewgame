@@ -28,6 +28,8 @@ public class NPCAI : UnitTemplate {
 	float sightRange = 100;
 	
 	RaycastHit targetInfo;
+
+	int rotationDir;
 	
 	
 	// Use this for initialization
@@ -41,12 +43,19 @@ public class NPCAI : UnitTemplate {
 	// Update is called once per frame
 	void FixedUpdate () {
 		velocity = new Vector2(Mathf.Max(velocity.x = acceleration, -speedMax), Mathf.Max(velocity.y = acceleration, -speedMax));
-		VisionControl();
-		ObjRecognition();
 	}
 	
-	void VisionControl(){
-		targetInfo = Raycaster.instance.GetTarget("null", sightRange, gameObject);
+	public void VisionControl(GameObject gO){
+		//Center Line
+		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
+
+		//Peripheral lines
+		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(-0.1f, 1, 0), gO);
+		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(0.1f, 1, 0), gO); 
+		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
+
+		if(leftSide.distance > rightSide.distance) rotationDir = 1;
+		if(rightSide.distance > leftSide.distance) rotationDir = -1;
 	}
 	
 	void ObjRecognition(){
@@ -57,16 +66,14 @@ public class NPCAI : UnitTemplate {
 	}
 	
 	public void MoveControl(GameObject gO){
-		//obbject referenece bla bla somethings wrong with the gameobject.
-		DirectionalMovement.instance.MoveToPoint(targetInfo.point, 2, gO);
+		DirectionalMovement.instance.MoveToPoint(targetInfo.point, .05f, gO);//Works well. Any speed over .1 is too fast
 	}
 
-	public void RotationControl(GameObject gO, bool direction, Vector3 target){ //for direction 0 is right left is 1
+	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
 		//Rotates toward the target
-		rigidbody.transform.eulerAngles = new Vector3(0,0,Mathf.Atan2((target.y - transform.position.y), (target.x - transform.position.x))*Mathf.Rad2Deg - 90);
-		
+//		rigidbody.transform.eulerAngles = new Vector3(0,0,Mathf.Atan2((target.y - transform.position.y), (target.x - transform.position.x))*Mathf.Rad2Deg - 90);
+		rigidbody.MoveRotation(Quaternion.AngleAxis((.05f * rotationDir), Vector3.up));
 		//Judge the distance from the object and the mouse
-		distanceFromObject = target.magnitude;
-
+//		distanceFromObject = target.magnitude;
 	}
 }

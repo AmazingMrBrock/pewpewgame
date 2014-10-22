@@ -11,7 +11,6 @@ public class EnemyBrain : MonoBehaviour {
 	/// Figure out how to organize function controls.
 	/// </summary>
 
-	public GameObject npcGo;
 
 	// Use this for initialization
 	void Awake () {
@@ -19,11 +18,13 @@ public class EnemyBrain : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		Navigation();
 	}
 
 	void Navigation(){
-		NPCAI.instance.MoveControl(npcGo);
+		NPCAI.instance.VisionControl(gameObject);
+		NPCAI.instance.MoveControl(gameObject);
+		NPCAI.instance.RotationControl(gameObject);
 	}
 }

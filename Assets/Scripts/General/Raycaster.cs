@@ -62,31 +62,31 @@ public class Raycaster : MonoBehaviour {
 
 	//Hit detection	
 
-	public float DistanceCheck(string layer, float hitDistance, GameObject gO){
+	public float DistanceCheck(float hitDistance, GameObject gO){
 		Vector3 origin = gO.transform.position;
 		dCheck = 0f;
-		RaycastLoop(origin, layer, hitDistance, gO);
+		RaycastLoop(origin, hitDistance, gO);
 		return hitDistance;
 	}
 
-	public Vector3 PointChecker(string layer, float hitDistance, GameObject gO){
+	public Vector3 PointChecker(float hitDistance, GameObject gO){
 		Vector3 origin = gO.transform.position;
 		hitPoint = new Vector3(0, 0, 0);
-		RaycastLoop(origin, layer, hitDistance, gO);
+		RaycastLoop(origin, hitDistance, gO);
 		return hitPoint;
 	}
 
-	public bool HitChecker(string layer, float hitDistance, GameObject gO){
+	public bool HitChecker(float hitDistance, GameObject gO){
 		Vector3 origin = gO.transform.position;
 		hitResponse = false;
-		RaycastLoop(origin, layer, hitDistance, gO);
+		RaycastLoop(origin, hitDistance, gO);
 //		Debug.Log("Layer check " + layer);
 		return hitResponse;
 	}
 
-	public RaycastHit GetTarget(string layer, float hitDistance, GameObject gO){
+	public RaycastHit GetTarget(Vector3 direction, GameObject gO){
 		Vector3 origin = gO.transform.position;
-		RaycastHit newHit = RaycastFire(Vector3.up, origin, layer);
+		RaycastHit newHit = RaycastFire(Vector3.up, origin);
 //		Debug.Log("Target distance: " + newHit.distance + " hitDistance: " + hitDistance);
 //		Debug.Log("Target name: " + newHit.collider);
 		return newHit;
@@ -113,32 +113,29 @@ public class Raycaster : MonoBehaviour {
 
 	//Raycast Engine
 
-	void RaycastLoop(Vector2 origin, string layer, float hitDistance, GameObject gO){
+	void RaycastLoop(Vector2 origin, float hitDistance, GameObject gO){
 		Vector3 vec = Vector3.up;
 		float a = 0f;
 		for(int i = 0; i < hitInfo.Length; i ++){
 			a = + 19f;
 			vec = Quaternion.AngleAxis(a, Vector3.forward) * vec;
-			hitInfo[i] = RaycastFire(vec, origin, layer);
+			hitInfo[i] = RaycastFire(vec, origin);
 			HitCheck(hitDistance, i, hitInfo[i]);
 		}
 	}
-	//The problem with attack is in here somewhere. 
-	RaycastHit RaycastFire(Vector2 dir, Vector2 origin, string layer){
+	 
+	RaycastHit RaycastFire(Vector2 dir, Vector2 origin){
 		RaycastHit hitIn;
 		Physics.Raycast(origin, dir, out hitIn, 100); 
 		Debug.DrawRay(origin, dir, Color.cyan);
 		return hitIn;
 	}
 
-	void DebugLogger(Vector2 dir, Vector2 ori, string layer, bool hit){
-		if(layer == "NormalCollisions"){
-			if(!hit){Debug.DrawRay(ori, dir, Color.cyan);}
-			if(hit){Debug.DrawRay(ori, dir, Color.yellow);}
-		}
-		if(layer == "Enemy"){
-			if(!hit){Debug.DrawRay(ori, dir, Color.cyan);}
-			if(hit){Debug.DrawRay(ori, dir, Color.red);}
-		}
+	void DebugLogger(Vector2 dir, Vector2 ori, bool hit){
+		if(!hit){Debug.DrawRay(ori, dir, Color.cyan);}
+		if(hit){Debug.DrawRay(ori, dir, Color.yellow);}
+
+		if(!hit){Debug.DrawRay(ori, dir, Color.cyan);}
+		if(hit){Debug.DrawRay(ori, dir, Color.red);}
 	}
 }
