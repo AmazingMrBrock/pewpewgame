@@ -47,15 +47,18 @@ public class NPCAI : UnitTemplate {
 	
 	public void VisionControl(GameObject gO){
 		//Center Line
-//		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
+		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
+
 
 		//Peripheral lines
-		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(-0.5f, 5, 0), gO);
-		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(0.5f, 5, 0), gO);
-		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
+		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(0.8f, 1, 0), gO);
+		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(-0.8f, 1, 0), gO);
+//		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
 
 		if(leftSide.distance > rightSide.distance) rotationDir = 1;
 		if(rightSide.distance > leftSide.distance) rotationDir = -1;
+
+//		Debug.Log ("Rotation direction: " + rotationDir);
 	}
 	
 	void ObjRecognition(){
@@ -72,7 +75,7 @@ public class NPCAI : UnitTemplate {
 	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
 		//Rotates toward the target
 //		rigidbody.transform.eulerAngles = new Vector3(0,0,Mathf.Atan2((target.y - transform.position.y), (target.x - transform.position.x))*Mathf.Rad2Deg - 90);
-		rigidbody.MoveRotation(Quaternion.AngleAxis((.05f * rotationDir), Vector3.up));
+		gO.transform.rigidbody.MoveRotation(Quaternion.AngleAxis((.5f * rotationDir), Vector3.up));
 		//Judge the distance from the object and the mouse
 //		distanceFromObject = target.magnitude;
 	}
