@@ -47,11 +47,11 @@ public class NPCAI : UnitTemplate {
 	
 	public void VisionControl(GameObject gO){
 		//Center Line
-		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
+//		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
 
 		//Peripheral lines
-		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(-0.1f, 1, 0), gO);
-		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(0.1f, 1, 0), gO); 
+		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(-0.5f, 5, 0), gO);
+		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(0.5f, 5, 0), gO);
 		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
 
 		if(leftSide.distance > rightSide.distance) rotationDir = 1;

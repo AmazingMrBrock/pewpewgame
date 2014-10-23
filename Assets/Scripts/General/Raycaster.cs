@@ -113,7 +113,7 @@ public class Raycaster : MonoBehaviour {
 
 	//Raycast Engine
 
-	void RaycastLoop(Vector2 origin, float hitDistance, GameObject gO){
+	void RaycastLoop(Vector3 origin, float hitDistance, GameObject gO){
 		Vector3 vec = Vector3.up;
 		float a = 0f;
 		for(int i = 0; i < hitInfo.Length; i ++){
@@ -124,14 +124,14 @@ public class Raycaster : MonoBehaviour {
 		}
 	}
 	 
-	RaycastHit RaycastFire(Vector2 dir, Vector2 origin){
+	RaycastHit RaycastFire(Vector3 dir, Vector3 origin){
 		RaycastHit hitIn;
 		Physics.Raycast(origin, dir, out hitIn, 100); 
-		Debug.DrawRay(origin, dir, Color.cyan);
+		Debug.DrawRay(origin, dir, Color.cyan, 1f);
 		return hitIn;
 	}
 
-	void DebugLogger(Vector2 dir, Vector2 ori, bool hit){
+	void DebugLogger(Vector3 dir, Vector3 ori, bool hit){
 		if(!hit){Debug.DrawRay(ori, dir, Color.cyan);}
 		if(hit){Debug.DrawRay(ori, dir, Color.yellow);}
 

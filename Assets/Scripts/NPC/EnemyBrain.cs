@@ -24,7 +24,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	void Navigation(){
 		NPCAI.instance.VisionControl(gameObject);
-		NPCAI.instance.MoveControl(gameObject);
+//		NPCAI.instance.MoveControl(gameObject);
 		NPCAI.instance.RotationControl(gameObject);
 	}
 }
