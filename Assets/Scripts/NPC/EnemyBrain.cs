@@ -4,6 +4,8 @@ using System.Collections;
 public class EnemyBrain : MonoBehaviour {
 	public static EnemyBrain instance;
 
+	RaycastHit distanceToObj;
+
 	/// <summary>
 	/// Controls AI functions to make a semblance of conscious action.
 	/// 
@@ -22,9 +24,14 @@ public class EnemyBrain : MonoBehaviour {
 		Navigation();
 	}
 
-	void Navigation(){
-		NPCAI.instance.VisionControl(gameObject);
-//		NPCAI.instance.MoveControl(gameObject);
-		NPCAI.instance.RotationControl(gameObject);
+	void Navigation(){//Start making some if statements to direct how navigation works
+		distanceToObj = NPCAI.instance.VisionControl(gameObject);
+		NPCAI.instance.PeripheralControl(gameObject);
+		if(distanceToObj.distance < 3){
+			NPCAI.instance.RotationControl(gameObject);
+		}
+		if(distanceToObj.distance > 3){
+			NPCAI.instance.MoveControl(gameObject);
+		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class NPCAI : UnitTemplate {
@@ -29,9 +29,10 @@ public class NPCAI : UnitTemplate {
 	
 	RaycastHit targetInfo;
 
-	int rotationDir;
-	
-	
+	Vector3 rotationDir;
+
+	float rotationSpeed = 2;
+
 	// Use this for initialization
 	void Awake () {
 		instance = this;
@@ -45,20 +46,22 @@ public class NPCAI : UnitTemplate {
 		velocity = new Vector2(Mathf.Max(velocity.x = acceleration, -speedMax), Mathf.Max(velocity.y = acceleration, -speedMax));
 	}
 	
-	public void VisionControl(GameObject gO){
+	public RaycastHit VisionControl(GameObject gO){
 		//Center Line
 		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
 
+//		Debug.Log ("Rotation direction: " + rotationDir);
+		return targetInfo;
+	}
 
+	public void PeripheralControl(GameObject gO){
 		//Peripheral lines
 		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(0.8f, 1, 0), gO);
 		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(-0.8f, 1, 0), gO);
-//		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
-
-		if(leftSide.distance > rightSide.distance) rotationDir = 1;
-		if(rightSide.distance > leftSide.distance) rotationDir = -1;
-
-//		Debug.Log ("Rotation direction: " + rotationDir);
+		//		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
+		
+		if(leftSide.distance > rightSide.distance) rotationDir = rightSide.point;
+		if(rightSide.distance > leftSide.distance) rotationDir = leftSide.point;
 	}
 	
 	void ObjRecognition(){
@@ -74,9 +77,9 @@ public class NPCAI : UnitTemplate {
 
 	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
 		//Rotates toward the target
-//		rigidbody.transform.eulerAngles = new Vector3(0,0,Mathf.Atan2((target.y - transform.position.y), (target.x - transform.position.x))*Mathf.Rad2Deg - 90);
-		gO.transform.rigidbody.MoveRotation(Quaternion.AngleAxis((.5f * rotationDir), Vector3.up));
-		//Judge the distance from the object and the mouse
-//		distanceFromObject = target.magnitude;
+
+		float angle = Mathf.Atan2(rotationDir.y, rotationDir.x) * Mathf.Rad2Deg;
+		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
+		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 	}
 }
