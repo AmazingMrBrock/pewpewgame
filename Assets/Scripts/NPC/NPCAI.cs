@@ -1,4 +1,4 @@
-using UnityEngine;
+  using UnityEngine;
 using System.Collections;
 
 public class NPCAI : UnitTemplate {
@@ -47,8 +47,11 @@ public class NPCAI : UnitTemplate {
 	}
 	
 	public RaycastHit VisionControl(GameObject gO){
+		Ray ray = Raycaster.instance.TargetRay(gO, gO.transform.up);
+
 		//Center Line
-		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
+//		targetInfo = Raycaster.instance.GetTarget(Vector3.up, gameObject);
+		Physics.Raycast(ray, out targetInfo, 100);
 
 //		Debug.Log ("Rotation direction: " + rotationDir);
 		return targetInfo;
@@ -56,8 +59,21 @@ public class NPCAI : UnitTemplate {
 
 	public void PeripheralControl(GameObject gO){
 		//Peripheral lines
-		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(0.8f, 1, 0), gO);
-		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(-0.8f, 1, 0), gO);
+		Vector3 leftDir = gO.transform.up + -gO.transform.right;
+		Vector3 rightDir = gO.transform.up + gO.transform.right;
+
+		Ray leftRay = Raycaster.instance.TargetRay(gO, leftDir);
+		Ray rightRay = Raycaster.instance.TargetRay(gO, rightDir);
+
+		RaycastHit leftSide;
+		RaycastHit rightSide;
+
+		Physics.Raycast(leftRay, out leftSide, 100);
+		Physics.Raycast(rightRay, out rightSide, 100);
+		
+
+//		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(0.8f, 1, 0), gO);
+//		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(-0.8f, 1, 0), gO);
 		//		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
 		
 		if(leftSide.distance > rightSide.distance) rotationDir = rightSide.point;
@@ -77,9 +93,21 @@ public class NPCAI : UnitTemplate {
 
 	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
 		//Rotates toward the target
-
+		//Works but screws up raycasts
 		float angle = Mathf.Atan2(rotationDir.y, rotationDir.x) * Mathf.Rad2Deg;
 		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+
+		//works on weird angle stuff.
+//		Vector3 direction; // I think you know how to set this 
+//		float speed = 2.0f;
+//		gO.transform.eulerAngles = new Vector3(Mathf.Lerp(gO.transform.eulerAngles.x, rotationDir.x, speed), Mathf.Lerp(gO.transform.eulerAngles.y, rotationDir.y, speed), gO.transform.eulerAngles.z);
+//		gO.transform.eulerAngles = new Vector3(gO.transform.eulerAngles.x, gO.transform.eulerAngles.y, Mathf.Lerp(gO.transform.eulerAngles.z, rotationDir.z, speed));
+
+
+		//could be made to work still screws up the angle business.
+//		Vector3 rot = gO.rigidbody.rotation.eulerAngles;
+//		rot.z = 45f;
+//		gO.rigidbody.rotation = Quaternion.Euler(rot);
 	}
 }

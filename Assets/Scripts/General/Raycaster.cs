@@ -49,8 +49,8 @@ public class Raycaster : MonoBehaviour {
 	}
 
 	//Target Ray
-	public Ray TargetRay(GameObject gO){
-		Vector3 actionVector = MouseRay().point; 
+	public Ray TargetRay(GameObject gO, Vector3 target){
+		Vector3 actionVector = target; 
 		actionVector.x = actionVector.x - gO.transform.position.x;
 		actionVector.y = actionVector.y - gO.transform.position.y;
 		actionVector.z = 0;
@@ -84,7 +84,10 @@ public class Raycaster : MonoBehaviour {
 		return hitResponse;
 	}
 
-	public RaycastHit GetTarget(Vector3 direction, GameObject gO){
+	public RaycastHit GetTarget(Vector3 direction, GameObject gO){ //the issue with npc raycasting is in here
+		direction.x = direction.x - gO.transform.position.x;
+		direction.y = direction.y - gO.transform.position.y;
+		direction.z = 0;
 		Vector3 origin = gO.transform.position;
 		RaycastHit newHit = RaycastFire(direction, origin);
 //		Debug.Log("Target distance: " + newHit.distance + " hitDistance: " + hitDistance);

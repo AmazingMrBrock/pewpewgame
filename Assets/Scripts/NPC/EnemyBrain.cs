@@ -5,6 +5,7 @@ public class EnemyBrain : MonoBehaviour {
 	public static EnemyBrain instance;
 
 	RaycastHit distanceToObj;
+	GameObject gO;
 
 	/// <summary>
 	/// Controls AI functions to make a semblance of conscious action.
@@ -27,7 +28,7 @@ public class EnemyBrain : MonoBehaviour {
 	void Navigation(){//Start making some if statements to direct how navigation works
 		distanceToObj = NPCAI.instance.VisionControl(gameObject);
 		NPCAI.instance.PeripheralControl(gameObject);
-		if(distanceToObj.distance < 3){
+		if(distanceToObj.distance < 3.5){
 			NPCAI.instance.RotationControl(gameObject);
 		}
 		if(distanceToObj.distance > 3){

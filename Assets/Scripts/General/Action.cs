@@ -48,7 +48,7 @@ public class Action : MonoBehaviour {
 	//SET UP ATTACK SO THAT IT PULLS TARGETING RAYCAST FROM A VISION SUBROUTINE
 	public void Attack(Vector3 rangeDamageArea, Vector3 timeDistanceDuration, string layer, GameObject gO, AudioClip soundEffect){
 		float finalDamage = 0;
-		Ray ray = Raycaster.instance.TargetRay(gO);
+		Ray ray = Raycaster.instance.TargetRay(gO, Raycaster.instance.MouseRay().point);
 //		Debug.Log ("game object location: " + gO.transform.position);
 		RaycastHit targetHit;
 
