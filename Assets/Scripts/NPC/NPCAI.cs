@@ -29,7 +29,7 @@ public class NPCAI : UnitTemplate {
 	
 	RaycastHit targetInfo;
 
-	Vector3 rotationDir;
+
 
 	float rotationSpeed = 2;
 
@@ -57,14 +57,16 @@ public class NPCAI : UnitTemplate {
 		return targetInfo;
 	}
 
-	public void PeripheralControl(GameObject gO){
+	public Vector3 PeripheralControl(GameObject gO){
 		//Peripheral lines
 //		Vector3 leftDir = gO.transform.up + -gO.transform.right;
 //		Vector3 rightDir = gO.transform.up + gO.transform.right;
+		Vector3 rotationDir;
 
 		Vector3 leftDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(-Vector3.right);
 		Vector3 rightDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(Vector3.right);
 
+		rotationDir = leftDir;
 		Ray leftRay = Raycaster.instance.TargetRay(gO, leftDir);
 		Ray rightRay = Raycaster.instance.TargetRay(gO, rightDir);
 
@@ -75,9 +77,11 @@ public class NPCAI : UnitTemplate {
 		Physics.Raycast(rightRay, out rightSide, 100);
 
 //		Debug.Log ("Left Side Dist: " + leftSide.distance + "Right Side Dist: " + rightSide.distance);
-		Debug.Log ("Left vector; " + leftDir + "Right vector: " + rightDir);
+
 		if(leftSide.distance > rightSide.distance) rotationDir = rightSide.point;
 		if(rightSide.distance > leftSide.distance) rotationDir = leftSide.point;
+
+		return rotationDir;
 	}
 	
 	void ObjRecognition(){
@@ -87,14 +91,14 @@ public class NPCAI : UnitTemplate {
 		
 	}
 	
-	public void MoveControl(GameObject gO){
-		DirectionalMovement.instance.MoveToPoint(targetInfo.point, .05f, gO);//Works well. Any speed over .1 is too fast
+	public void MoveControl(GameObject gO, float speed){
+		DirectionalMovement.instance.MoveToPoint(targetInfo.point, speed, gO);//Works well. Any speed over .1 is too fast
 	}
 
 	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
 		//Rotates toward the target
 		//Works but screws up raycasts
-		float angle = Mathf.Atan2(rotationDir.y, rotationDir.x) * Mathf.Rad2Deg;
+		float angle = Mathf.Atan2(PeripheralControl(gO).y, PeripheralControl(gO).x) * Mathf.Rad2Deg;
 		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 

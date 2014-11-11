@@ -26,13 +26,25 @@ public class EnemyBrain : MonoBehaviour {
 	}
 
 	void Navigation(){//Start making some if statements to direct how navigation works
+		bool reverse = false;
+		Debug.Log ("distance to object: " + distanceToObj.distance);	
 		distanceToObj = NPCAI.instance.VisionControl(gameObject);
-		NPCAI.instance.PeripheralControl(gameObject);
-		if(distanceToObj.distance < 3.5){
-			NPCAI.instance.RotationControl(gameObject);
+		if(distanceToObj.distance < 1f) NPCAI.instance.RotationControl(gameObject);
+		
+		if(distanceToObj.distance > 1f){
+			Debug.Log("reverse: " + reverse);
+			if(reverse == false) {
+				NPCAI.instance.MoveControl(gameObject, 0.2f); Debug.Log("step 1");
+				if(distanceToObj.distance < 1f) reverse = true;
+			}
+			if(reverse == true){ 
+				NPCAI.instance.MoveControl(gameObject, -0.2f); Debug.Log("step 2");
+				if(distanceToObj.distance > 1.5f) reverse = false;
+			}
 		}
-		if(distanceToObj.distance > 3){
-			NPCAI.instance.MoveControl(gameObject);
-		}
+
+
 	}
+
+
 }
