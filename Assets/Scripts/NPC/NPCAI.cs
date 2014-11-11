@@ -59,8 +59,11 @@ public class NPCAI : UnitTemplate {
 
 	public void PeripheralControl(GameObject gO){
 		//Peripheral lines
-		Vector3 leftDir = gO.transform.up + -gO.transform.right;
-		Vector3 rightDir = gO.transform.up + gO.transform.right;
+//		Vector3 leftDir = gO.transform.up + -gO.transform.right;
+//		Vector3 rightDir = gO.transform.up + gO.transform.right;
+
+		Vector3 leftDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(-Vector3.right);
+		Vector3 rightDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(Vector3.right);
 
 		Ray leftRay = Raycaster.instance.TargetRay(gO, leftDir);
 		Ray rightRay = Raycaster.instance.TargetRay(gO, rightDir);
@@ -70,12 +73,9 @@ public class NPCAI : UnitTemplate {
 
 		Physics.Raycast(leftRay, out leftSide, 100);
 		Physics.Raycast(rightRay, out rightSide, 100);
-		
 
-//		RaycastHit leftSide = Raycaster.instance.GetTarget(new Vector3(0.8f, 1, 0), gO);
-//		RaycastHit rightSide = Raycaster.instance.GetTarget(new Vector3(-0.8f, 1, 0), gO);
-		//		Debug.Log ("Lefts side: " + leftSide.distance + " Right side: " + rightSide.distance);
-		
+//		Debug.Log ("Left Side Dist: " + leftSide.distance + "Right Side Dist: " + rightSide.distance);
+		Debug.Log ("Left vector; " + leftDir + "Right vector: " + rightDir);
 		if(leftSide.distance > rightSide.distance) rotationDir = rightSide.point;
 		if(rightSide.distance > leftSide.distance) rotationDir = leftSide.point;
 	}
