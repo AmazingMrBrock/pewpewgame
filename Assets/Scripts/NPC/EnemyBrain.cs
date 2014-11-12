@@ -5,7 +5,7 @@ public class EnemyBrain : MonoBehaviour {
 	public static EnemyBrain instance;
 
 	RaycastHit distanceToObj;
-	GameObject gO;
+	public GameObject gO;
 
 	/// <summary>
 	/// Controls AI functions to make a semblance of conscious action.
@@ -23,26 +23,31 @@ public class EnemyBrain : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		Navigation();
+		NPCAI.instance.speedCheck(gO);
 	}
 
 	void Navigation(){//Start making some if statements to direct how navigation works
 		bool reverse = false;
+		Debug.Log("reverse: " + reverse);
 		Debug.Log ("distance to object: " + distanceToObj.distance);	
-		distanceToObj = NPCAI.instance.VisionControl(gameObject);
-		if(distanceToObj.distance < 1f) NPCAI.instance.RotationControl(gameObject);
-		
-		if(distanceToObj.distance > 1f){
-			Debug.Log("reverse: " + reverse);
-			if(reverse == false) {
-				NPCAI.instance.MoveControl(gameObject, 0.2f); Debug.Log("step 1");
-				if(distanceToObj.distance < 1f) reverse = true;
-			}
-			if(reverse == true){ 
-				NPCAI.instance.MoveControl(gameObject, -0.2f); Debug.Log("step 2");
-				if(distanceToObj.distance > 1.5f) reverse = false;
+		distanceToObj = NPCAI.instance.VisionControl(gO);
+
+		if(distanceToObj.distance < 1f){
+			NPCAI.instance.RotationControl(gO);
+			if(NPCAI.instance.speedCheck(gO) == 0){
+				reverse = true;
 			}
 		}
+		if(distanceToObj.distance > 1f){
 
+			if(reverse == false) {
+				NPCAI.instance.MoveControl(gO, 0.2f);
+			}
+			if(reverse == true){ 
+				NPCAI.instance.MoveControl(gO, -0.2f);
+				if(distanceToObj.distance > 3)reverse = false;
+			}
+		}
 
 	}
 

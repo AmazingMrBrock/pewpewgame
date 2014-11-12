@@ -29,6 +29,7 @@ public class NPCAI : UnitTemplate {
 	
 	RaycastHit targetInfo;
 
+	Vector3 lastPosition = Vector3.zero;
 
 
 	float rotationSpeed = 2;
@@ -80,6 +81,7 @@ public class NPCAI : UnitTemplate {
 
 		if(leftSide.distance > rightSide.distance) rotationDir = rightSide.point;
 		if(rightSide.distance > leftSide.distance) rotationDir = leftSide.point;
+		if(leftSide.distance == rightSide.distance) rotationDir = leftSide.point;
 
 		return rotationDir;
 	}
@@ -101,17 +103,13 @@ public class NPCAI : UnitTemplate {
 		float angle = Mathf.Atan2(PeripheralControl(gO).y, PeripheralControl(gO).x) * Mathf.Rad2Deg;
 		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+	}
 
-		//works on weird angle stuff.
-//		Vector3 direction; // I think you know how to set this 
-//		float speed = 2.0f;
-//		gO.transform.eulerAngles = new Vector3(Mathf.Lerp(gO.transform.eulerAngles.x, rotationDir.x, speed), Mathf.Lerp(gO.transform.eulerAngles.y, rotationDir.y, speed), gO.transform.eulerAngles.z);
-//		gO.transform.eulerAngles = new Vector3(gO.transform.eulerAngles.x, gO.transform.eulerAngles.y, Mathf.Lerp(gO.transform.eulerAngles.z, rotationDir.z, speed));
+	public float speedCheck(GameObject gO){
+		float speed = (gO.transform.position - lastPosition).magnitude;
+		lastPosition = gO.transform.position;
 
-
-		//could be made to work still screws up the angle business.
-//		Vector3 rot = gO.rigidbody.rotation.eulerAngles;
-//		rot.z = 45f;
-//		gO.rigidbody.rotation = Quaternion.Euler(rot);
+//		Debug.Log ("speed = " + speed);
+		return speed;
 	}
 }
