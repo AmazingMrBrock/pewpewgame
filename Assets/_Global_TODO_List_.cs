@@ -11,6 +11,8 @@ public class _Global_TODO_List_ : MonoBehaviour {
 	/// Replace and remove playerScript // nov 17
 	/// 
 	/// Work on enemyai, needs to walk around. // nov 15
+	/// I'm close with this one. I need to add some more peripheral vision triggers.
+	/// 
 	/// Look into adding a vector3 based movement system, to be able to set destination points easier. // nov 15
 	/// Work on actions needs activate, heal // nov 15
 	/// 

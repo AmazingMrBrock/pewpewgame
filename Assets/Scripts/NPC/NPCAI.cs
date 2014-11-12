@@ -58,16 +58,16 @@ public class NPCAI : UnitTemplate {
 		return targetInfo;
 	}
 
-	public Vector3 PeripheralControl(GameObject gO){
+	public RaycastHit PeripheralControl(GameObject gO){
 		//Peripheral lines
 //		Vector3 leftDir = gO.transform.up + -gO.transform.right;
 //		Vector3 rightDir = gO.transform.up + gO.transform.right;
-		Vector3 rotationDir;
+		RaycastHit rotationDir;
 
 		Vector3 leftDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(-Vector3.right);
 		Vector3 rightDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(Vector3.right);
 
-		rotationDir = leftDir;
+
 		Ray leftRay = Raycaster.instance.TargetRay(gO, leftDir);
 		Ray rightRay = Raycaster.instance.TargetRay(gO, rightDir);
 
@@ -76,12 +76,12 @@ public class NPCAI : UnitTemplate {
 
 		Physics.Raycast(leftRay, out leftSide, 100);
 		Physics.Raycast(rightRay, out rightSide, 100);
-
+		rotationDir = rightSide;
 //		Debug.Log ("Left Side Dist: " + leftSide.distance + "Right Side Dist: " + rightSide.distance);
 
-		if(leftSide.distance > rightSide.distance) rotationDir = rightSide.point;
-		if(rightSide.distance > leftSide.distance) rotationDir = leftSide.point;
-		if(leftSide.distance == rightSide.distance) rotationDir = leftSide.point;
+		if(leftSide.distance > rightSide.distance) rotationDir = rightSide;
+		if(rightSide.distance > leftSide.distance) rotationDir = leftSide;
+		if(leftSide.distance == rightSide.distance) rotationDir = rightSide;
 
 		return rotationDir;
 	}
@@ -100,7 +100,7 @@ public class NPCAI : UnitTemplate {
 	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
 		//Rotates toward the target
 		//Works but screws up raycasts
-		float angle = Mathf.Atan2(PeripheralControl(gO).y, PeripheralControl(gO).x) * Mathf.Rad2Deg;
+		float angle = Mathf.Atan2(PeripheralControl(gO).point.y, PeripheralControl(gO).point.x) * Mathf.Rad2Deg;
 		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 	}
