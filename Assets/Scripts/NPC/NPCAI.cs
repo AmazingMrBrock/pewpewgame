@@ -58,32 +58,17 @@ public class NPCAI : UnitTemplate {
 		return targetInfo;
 	}
 
-	public RaycastHit PeripheralControl(GameObject gO){
+	public void PeripheralControl(GameObject gO, out RaycastHit leftSide, out RaycastHit rightSide){
 		//Peripheral lines
-//		Vector3 leftDir = gO.transform.up + -gO.transform.right;
-//		Vector3 rightDir = gO.transform.up + gO.transform.right;
-		RaycastHit rotationDir;
 
 		Vector3 leftDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(-Vector3.right);
 		Vector3 rightDir = gO.transform.TransformDirection(Vector3.up) + gO.transform.TransformDirection(Vector3.right);
 
-
 		Ray leftRay = Raycaster.instance.TargetRay(gO, leftDir);
 		Ray rightRay = Raycaster.instance.TargetRay(gO, rightDir);
 
-		RaycastHit leftSide;
-		RaycastHit rightSide;
-
 		Physics.Raycast(leftRay, out leftSide, 100);
 		Physics.Raycast(rightRay, out rightSide, 100);
-		rotationDir = rightSide;
-//		Debug.Log ("Left Side Dist: " + leftSide.distance + "Right Side Dist: " + rightSide.distance);
-
-		if(leftSide.distance > rightSide.distance) rotationDir = rightSide;
-		if(rightSide.distance > leftSide.distance) rotationDir = leftSide;
-		if(leftSide.distance == rightSide.distance) rotationDir = rightSide;
-
-		return rotationDir;
 	}
 	
 	void ObjRecognition(){
@@ -94,6 +79,8 @@ public class NPCAI : UnitTemplate {
 	}
 	
 	public void MoveControl(GameObject gO, float speed){
+		//need to pass a different target to the movement statement. 
+		//need to set up some sort of trigger system to decide which target to pass no the statement.
 		DirectionalMovement.instance.MoveToPoint(targetInfo.point, speed, gO);//Works well. Any speed over .1 is too fast
 	}
 
@@ -105,11 +92,28 @@ public class NPCAI : UnitTemplate {
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 	}
 
-	public float speedCheck(GameObject gO){
+	public float SpeedCheck(GameObject gO){
 		float speed = (gO.transform.position - lastPosition).magnitude;
 		lastPosition = gO.transform.position;
 
 //		Debug.Log ("speed = " + speed);
 		return speed;
+	}
+
+	public void WallCheck(GameObject gO, out RaycastHit wallForw, out RaycastHit wallRight, out RaycastHit wallBack, out RaycastHit wallLeft){
+		Ray frontRay = Raycaster.instance.TargetRay(gO, Vector3.up);
+		Ray rightRay = Raycaster.instance.TargetRay(gO, Vector3.right);
+		Ray backRay = Raycaster.instance.TargetRay(gO, Vector3.down);
+		Ray leftRay = Raycaster.instance.TargetRay(gO, Vector3.left);
+
+		RaycastHit frontRH;
+		RaycastHit rightRH;
+		RaycastHit backRH;
+		RaycastHit leftRH;
+
+		Physics.Raycast(frontRay, out frontRH, 100);
+		Physics.Raycast(rightRay, out rightRH, 100);
+		Physics.Raycast(backRay, out backRH, 100);
+		Physics.Raycast(leftRay, out leftRH, 100);
 	}
 }

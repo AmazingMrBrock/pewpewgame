@@ -10,6 +10,8 @@ public class _Global_TODO_List_ : MonoBehaviour {
 	/// Create playercontrol Script to handle input. // nov 17
 	/// Replace and remove playerScript // nov 17
 	/// 
+	/// need to alter movement control to take a direction input.
+	/// 
 	/// Work on enemyai, needs to walk around. // nov 15
 	/// I'm close with this one. I need to add some more peripheral vision triggers.
 	/// 
