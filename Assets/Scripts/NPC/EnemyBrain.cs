@@ -21,8 +21,11 @@ public class EnemyBrain : MonoBehaviour {
 	RaycastHit backWallRH;
 	RaycastHit leftWallRH;
 
+	float moveSpeed = 0.1f;
+
 	bool motion = false;
 	Vector2 motionDir = new Vector2(0, 0); //0 none, 1 forward, 2 right...
+	bool stop = false;
 	bool rotation = false;
 	bool rotationDir = false;
 	bool stuck = true;
@@ -35,6 +38,8 @@ public class EnemyBrain : MonoBehaviour {
 	/// 
 	/// TODO:
 	/// Figure out how to organize function controls.
+	/// 
+	/// get motionDir from gO.transform.up. Do some debug comparisions between it and vector3.up
 	/// </summary>
 
 
@@ -45,6 +50,10 @@ public class EnemyBrain : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		VisionReciever();
+		IsStuck();
+		MotionAwareness();
+		WallAwareness();
 		Navigation();
 	}
 
@@ -54,35 +63,65 @@ public class EnemyBrain : MonoBehaviour {
 	}
 
 	void Navigation(){//Start making some if statements to direct how navigation works
-		if(stuck == false){
-			NPCAI.instance.MoveControl(gO, 1.1f);
+		if(stop == false){
+			if(stuck == false){
+				NPCAI.instance.MoveControl(gO, gameObject.transform.up, moveSpeed);
+			}
+			else if(stuck == true){
+				WallAwareness();
+				//need to turn the wallDir variable into a movement direction.
+			}
 		}
-		else if(stuck == true){
-			WallAwareness();
-			//need to turn the wallDir variable into a movement direction.
-		}
-		//
-
+		Debug.Log ("stop? " + stop);	
+//		Debug.Log ("transform.up: " + gameObject.transform.up + "inversetransformpoint: " 
+//		           + gameObject.transform.InverseTransformPoint(gameObject.transform.up));
 	}
 	void IsStuck(){
 		unitSpeed = NPCAI.instance.SpeedCheck(gO);
 		if(unitSpeed == 0){
 			stuck = true;
 		}
+		else if(unitSpeed > 0.2f){
+			stuck = false;
+		}
 	}
 	void WallAwareness(){
 		NPCAI.instance.WallCheck(gO, out frontWallRH, out rightWallRH, out backWallRH, out leftWallRH);
-		if(frontWallRH.distance < 0.5f)wallDir = 1;
-		else if(frontWallRH.distance > 0.5f)wallDir = 0;
+		if(frontWallRH.distance < 0.55f){
+			wallDir = 1;
+			stop = true;
+		}
+		else if(frontWallRH.distance > 0.55f){
+			wallDir = 0;
+			stop = false;
+		}
 		else wallDir = 0;
-		if(rightWallRH.distance < 0.5f)wallDir = 2;
-		else if(frontWallRH.distance > 0.5f)wallDir = 0;
+		if(rightWallRH.distance < 0.55f){
+			wallDir = 2;
+			stop = true;
+		}
+		else if(frontWallRH.distance > 0.55f){
+			wallDir = 0;
+			stop = false;
+		}
 		else wallDir = 0;
-		if(backWallRH.distance < 0.5f)wallDir = 3;
-		else if(frontWallRH.distance > 0.5f)wallDir = 0;
+		if(backWallRH.distance < 0.55f){
+			wallDir = 3;
+			stop = true;
+		}
+		else if(frontWallRH.distance > 0.55f){
+			wallDir = 0;
+			stop = false;
+		}
 		else wallDir = 0;
-		if(leftWallRH.distance < 0.5f)wallDir = 4;
-		else if(frontWallRH.distance > 0.5f)wallDir = 0;
+		if(leftWallRH.distance < 0.55f){
+			wallDir = 4;
+			stop = true;
+		}
+		else if(frontWallRH.distance > 0.55f){
+			wallDir = 0;
+			stop = false;
+		}
 		else wallDir = 0;
 	}
 	void MotionAwareness(){
@@ -90,6 +129,6 @@ public class EnemyBrain : MonoBehaviour {
 		if(gameObject.transform.position.y < unitPos.y)motionDir.y = 2;
 		if(gameObject.transform.position.x > unitPos.x)motionDir.x = 3;
 		if(gameObject.transform.position.x < unitPos.x)motionDir.x = 4;
-		if(gameObject.transform.position.x == unitPos.x || gameObject.transform.position.y == unitPos.y)motion = new Vector2(0, 0);
+		if(gameObject.transform.position.x == unitPos.x || gameObject.transform.position.y == unitPos.y)motionDir = new Vector2(0, 0);
 	}
 }

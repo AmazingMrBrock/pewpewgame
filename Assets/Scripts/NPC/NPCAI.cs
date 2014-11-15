@@ -28,7 +28,8 @@ public class NPCAI : UnitTemplate {
 	float sightRange = 100;
 	
 	RaycastHit targetInfo;
-
+	RaycastHit rightPeRH;
+	RaycastHit leftPeRH;
 	Vector3 lastPosition = Vector3.zero;
 
 
@@ -78,16 +79,24 @@ public class NPCAI : UnitTemplate {
 		
 	}
 	
-	public void MoveControl(GameObject gO, float speed){
+	public void MoveControl(GameObject gO, Vector3 moveTo, float speed){
 		//need to pass a different target to the movement statement. 
 		//need to set up some sort of trigger system to decide which target to pass no the statement.
-		DirectionalMovement.instance.MoveToPoint(targetInfo.point, speed, gO);//Works well. Any speed over .1 is too fast
+		Vector3 heading = gameObject.transform.InverseTransformPoint(moveTo); 
+		//send a raycast down heading.
+
+		Ray headingRay = Raycaster.instance.TargetRay(gO, heading);
+		RaycastHit headingRH;
+		Physics.Raycast(headingRay, out headingRH, 100);
+
+		DirectionalMovement.instance.MoveToPoint(headingRH.point, speed, gO);//Works well. Any speed over .1 is too fast
 	}
 
 	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
 		//Rotates toward the target
 		//Works but screws up raycasts
-		float angle = Mathf.Atan2(PeripheralControl(gO).point.y, PeripheralControl(gO).point.x) * Mathf.Rad2Deg;
+		PeripheralControl(gO, out leftPeRH, out rightPeRH);
+		float angle = Mathf.Atan2(leftPeRH.point.y, rightPeRH.point.x) * Mathf.Rad2Deg;
 		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 	}
@@ -101,19 +110,19 @@ public class NPCAI : UnitTemplate {
 	}
 
 	public void WallCheck(GameObject gO, out RaycastHit wallForw, out RaycastHit wallRight, out RaycastHit wallBack, out RaycastHit wallLeft){
-		Ray frontRay = Raycaster.instance.TargetRay(gO, Vector3.up);
-		Ray rightRay = Raycaster.instance.TargetRay(gO, Vector3.right);
-		Ray backRay = Raycaster.instance.TargetRay(gO, Vector3.down);
-		Ray leftRay = Raycaster.instance.TargetRay(gO, Vector3.left);
+		Ray frontRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.up));
+		Ray rightRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.right));
+		Ray backRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.down));
+		Ray leftRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.left));
 
 		RaycastHit frontRH;
 		RaycastHit rightRH;
 		RaycastHit backRH;
 		RaycastHit leftRH;
 
-		Physics.Raycast(frontRay, out frontRH, 100);
-		Physics.Raycast(rightRay, out rightRH, 100);
-		Physics.Raycast(backRay, out backRH, 100);
-		Physics.Raycast(leftRay, out leftRH, 100);
+		Physics.Raycast(frontRay, out wallForw, 100);
+		Physics.Raycast(rightRay, out wallRight, 100);
+		Physics.Raycast(backRay, out wallBack, 100);
+		Physics.Raycast(leftRay, out wallLeft, 100);
 	}
 }
