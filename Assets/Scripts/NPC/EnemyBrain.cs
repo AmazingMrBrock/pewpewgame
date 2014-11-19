@@ -9,6 +9,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	float unitSpeed = 0f;
 	Vector3 unitPos = Vector3.zero;
+	Vector3 heading = Vector3.zero;
 
 	//vision raycasts
 	RaycastHit centerVisRH;
@@ -65,14 +66,15 @@ public class EnemyBrain : MonoBehaviour {
 	void Navigation(){//Start making some if statements to direct how navigation works
 		if(stop == false){
 			if(stuck == false){
-				NPCAI.instance.MoveControl(gO, gameObject.transform.up, moveSpeed);
+//				NPCAI.instance.MoveControl(gO, Vector3.up, moveSpeed);
 			}
 			else if(stuck == true){
 				WallAwareness();
 				//need to turn the wallDir variable into a movement direction.
+//				NPCAI.instance.MoveControl(gO, gameObject.transform.up, moveSpeed);
 			}
 		}
-		Debug.Log ("stop? " + stop);	
+//		Debug.Log ("stop? " + stop);	
 //		Debug.Log ("transform.up: " + gameObject.transform.up + "inversetransformpoint: " 
 //		           + gameObject.transform.InverseTransformPoint(gameObject.transform.up));
 	}
@@ -84,15 +86,18 @@ public class EnemyBrain : MonoBehaviour {
 		else if(unitSpeed > 0.2f){
 			stuck = false;
 		}
+//		Debug.Log ("Stuck? " + stuck);
 	}
 	void WallAwareness(){
 		NPCAI.instance.WallCheck(gO, out frontWallRH, out rightWallRH, out backWallRH, out leftWallRH);
 		if(frontWallRH.distance < 0.55f){
-			wallDir = 1;
+			wallDir = 1; // up
+			heading = -gameObject.transform.up;
 			stop = true;
 		}
 		else if(frontWallRH.distance > 0.55f){
 			wallDir = 0;
+			heading = gameObject.transform.up;
 			stop = false;
 		}
 		else wallDir = 0;
@@ -123,6 +128,8 @@ public class EnemyBrain : MonoBehaviour {
 			stop = false;
 		}
 		else wallDir = 0;
+		Debug.Log ("frontwallrh " + frontWallRH.distance + "rightwallrh " + rightWallRH.distance + "backwallrh " + backWallRH.distance + "rightwallrh " + rightWallRH.distance);	
+		Debug.Log ("walldir " + wallDir);
 	}
 	void MotionAwareness(){
 		if(gameObject.transform.position.y > unitPos.y)motionDir.y = 1;

@@ -82,7 +82,8 @@ public class NPCAI : UnitTemplate {
 	public void MoveControl(GameObject gO, Vector3 moveTo, float speed){
 		//need to pass a different target to the movement statement. 
 		//need to set up some sort of trigger system to decide which target to pass no the statement.
-		Vector3 heading = gameObject.transform.InverseTransformPoint(moveTo); 
+		Vector3 heading = gameObject.transform.TransformDirection(moveTo); 
+		Debug.Log ("heading " + heading);
 		//send a raycast down heading.
 
 		Ray headingRay = Raycaster.instance.TargetRay(gO, heading);
@@ -110,10 +111,11 @@ public class NPCAI : UnitTemplate {
 	}
 
 	public void WallCheck(GameObject gO, out RaycastHit wallForw, out RaycastHit wallRight, out RaycastHit wallBack, out RaycastHit wallLeft){
-		Ray frontRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.up));
-		Ray rightRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.right));
-		Ray backRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.down));
-		Ray leftRay = Raycaster.instance.TargetRay(gO, gO.transform.InverseTransformPoint(Vector3.left));
+		//these arent shooting the rays in the right direction
+		Ray frontRay = Raycaster.instance.TargetRay(gO, gO.transform.TransformDirection(Vector3.up));
+		Ray rightRay = Raycaster.instance.TargetRay(gO, gO.transform.TransformDirection(Vector3.right));
+		Ray backRay = Raycaster.instance.TargetRay(gO, gO.transform.TransformDirection(Vector3.down));
+		Ray leftRay = Raycaster.instance.TargetRay(gO, gO.transform.TransformDirection(Vector3.left));
 
 		RaycastHit frontRH;
 		RaycastHit rightRH;
