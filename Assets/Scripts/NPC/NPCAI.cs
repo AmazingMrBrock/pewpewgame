@@ -47,7 +47,7 @@ public class NPCAI : UnitTemplate {
 	void FixedUpdate () {
 		velocity = new Vector2(Mathf.Max(velocity.x = acceleration, -speedMax), Mathf.Max(velocity.y = acceleration, -speedMax));
 	}
-	
+	//NEED TO COMBINE VISION THINGS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public RaycastHit VisionControl(GameObject gO){
 		Ray ray = Raycaster.instance.TargetRay(gO, gO.transform.up);
 
@@ -93,10 +93,9 @@ public class NPCAI : UnitTemplate {
 		DirectionalMovement.instance.MoveToPoint(headingRH.point, speed, gO);//Works well. Any speed over .1 is too fast
 	}
 
-	public void RotationControl(GameObject gO){ //for direction 0 is right left is 1
+	public void RotationControl(GameObject gO, Vector3 rotDir){ //for direction 0 is right left is 1
 		//Rotates toward the target
 		//Works but screws up raycasts
-		PeripheralControl(gO, out leftPeRH, out rightPeRH);
 		float angle = Mathf.Atan2(leftPeRH.point.y, rightPeRH.point.x) * Mathf.Rad2Deg;
 		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
@@ -111,7 +110,6 @@ public class NPCAI : UnitTemplate {
 	}
 
 	public void WallCheck(GameObject gO, out RaycastHit wallForw, out RaycastHit wallRight, out RaycastHit wallBack, out RaycastHit wallLeft){
-		//these arent shooting the rays in the right direction
 		Ray frontRay = Raycaster.instance.TargetRay(gO, gO.transform.TransformDirection(Vector3.up));
 		Ray rightRay = Raycaster.instance.TargetRay(gO, gO.transform.TransformDirection(Vector3.right));
 		Ray backRay = Raycaster.instance.TargetRay(gO, gO.transform.TransformDirection(Vector3.down));
@@ -122,9 +120,43 @@ public class NPCAI : UnitTemplate {
 		RaycastHit backRH;
 		RaycastHit leftRH;
 
-		Physics.Raycast(frontRay, out wallForw, 100);
-		Physics.Raycast(rightRay, out wallRight, 100);
-		Physics.Raycast(backRay, out wallBack, 100);
-		Physics.Raycast(leftRay, out wallLeft, 100);
+		Physics.Raycast(frontRay, out wallForw, 100f);
+		Physics.Raycast(rightRay, out wallRight, 100f);
+		Physics.Raycast(backRay, out wallBack, 100f);
+		Physics.Raycast(leftRay, out wallLeft, 100f);
+	}
+	public int WallAwareness(GameObject gO){
+		RaycastHit frontWallRH;
+		RaycastHit rightWallRH;
+		RaycastHit backWallRH;
+		RaycastHit leftWallRH;
+		int wallDir = 0; //0 none, 1 forward, 2 right...
+		WallCheck(gO, out frontWallRH, out rightWallRH, out backWallRH, out leftWallRH);
+
+		if(frontWallRH.distance < 0.55f){
+			wallDir = 1; 
+			return wallDir;
+		}
+		if(rightWallRH.distance < 0.55f){
+			wallDir = 2;
+			return wallDir;
+		}
+		if(backWallRH.distance < 0.55f){
+			wallDir = 3;
+			return wallDir;
+		}
+		if(leftWallRH.distance < 0.55f){
+			wallDir = 4;
+			return wallDir;
+		}
+		if(frontWallRH.distance > 0.55f){
+			wallDir = 0;
+			return wallDir;
+		}
+		else wallDir = 0;
+		return wallDir;
+//		Debug.Log ("frontwallrh " + frontWallRH.distance + "rightwallrh " + rightWallRH.distance + "backwallrh " + backWallRH.distance + "rightwallrh " + rightWallRH.distance);	
+//		Debug.Log ("walldir " + wallDir);
+
 	}
 }
