@@ -32,7 +32,6 @@ public class NPCAI : UnitTemplate {
 	RaycastHit leftPeRH;
 	Vector3 lastPosition = Vector3.zero;
 
-
 	float rotationSpeed = 2;
 
 	// Use this for initialization
@@ -83,7 +82,7 @@ public class NPCAI : UnitTemplate {
 		//need to pass a different target to the movement statement. 
 		//need to set up some sort of trigger system to decide which target to pass no the statement.
 		Vector3 heading = gameObject.transform.TransformDirection(moveTo); 
-		Debug.Log ("heading " + heading);
+//		Debug.Log ("heading " + heading);
 		//send a raycast down heading.
 
 		Ray headingRay = Raycaster.instance.TargetRay(gO, heading);
@@ -125,35 +124,54 @@ public class NPCAI : UnitTemplate {
 		Physics.Raycast(backRay, out wallBack, 100f);
 		Physics.Raycast(leftRay, out wallLeft, 100f);
 	}
-	public int WallAwareness(GameObject gO){
+	public string WallAwareness(GameObject gO){
 		RaycastHit frontWallRH;
 		RaycastHit rightWallRH;
 		RaycastHit backWallRH;
 		RaycastHit leftWallRH;
-		int wallDir = 0; //0 none, 1 forward, 2 right...
+		string wallDir = "notSet"; //0 none, 1 forward, 2 right...
 		WallCheck(gO, out frontWallRH, out rightWallRH, out backWallRH, out leftWallRH);
 
-		if(frontWallRH.distance < 0.55f){
-			wallDir = 1; 
+		//cant see more than one wall. if I set it up to put walldir to 0 if the rh.distance is more than 0.55 then it'll
+		//set to 0 all the time because there will always be a wall more than 0.55.
+		//ifs may not work. May need to use an array or list or something.
+		// f, fR, fL, r, l, b, bR, bL
+		if(frontWallRH.distance < 0.55f || rightWallRH.distance > 0.55f || leftWallRH.distance > 0.55f){
+			wallDir = "f"; 
 			return wallDir;
 		}
-		if(rightWallRH.distance < 0.55f){
-			wallDir = 2;
+		if(frontWallRH.distance < 0.55f || leftWallRH.distance < 0.55f){
+			wallDir = "fL";
 			return wallDir;
 		}
-		if(backWallRH.distance < 0.55f){
-			wallDir = 3;
+		if(frontWallRH.distance < 0.55f || rightWallRH.distance < 0.55f){
+			wallDir = "fR";
 			return wallDir;
 		}
-		if(leftWallRH.distance < 0.55f){
-			wallDir = 4;
+		if(rightWallRH.distance < 0.55f || frontWallRH.distance > 0.55f || backWallRH.distance > 0.55f){
+			wallDir = "l"; 
 			return wallDir;
 		}
-		if(frontWallRH.distance > 0.55f){
-			wallDir = 0;
+		if(leftWallRH.distance < 0.55f || frontWallRH.distance > 0.55f || backWallRH.distance > 0.55f){
+			wallDir = "r"; 
 			return wallDir;
 		}
-		else wallDir = 0;
+		if(backWallRH.distance < 0.55f || rightWallRH.distance > 0.55f || leftWallRH.distance > 0.55f){
+			wallDir = "b";
+			return wallDir;
+		}
+		if(backWallRH.distance < 0.55f || leftWallRH.distance < 0.55f){
+			wallDir = "bL";
+			return wallDir;
+		}
+		if(backWallRH.distance < 0.55f || rightWallRH.distance > 0.55f){
+			wallDir = "bR";
+			return wallDir;
+		}
+		if(frontWallRH.distance > 0.55f || backWallRH.distance > 0.55f || rightWallRH.distance > 0.55f || leftWallRH.distance > 0.55f){
+			wallDir = "na";
+			return wallDir;
+		}
 		return wallDir;
 //		Debug.Log ("frontwallrh " + frontWallRH.distance + "rightwallrh " + rightWallRH.distance + "backwallrh " + backWallRH.distance + "rightwallrh " + rightWallRH.distance);	
 //		Debug.Log ("walldir " + wallDir);

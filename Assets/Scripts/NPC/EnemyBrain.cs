@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyBrain : MonoBehaviour {
 	public static EnemyBrain instance;
@@ -7,22 +8,26 @@ public class EnemyBrain : MonoBehaviour {
 	RaycastHit visionHit;
 	public GameObject gO;
 
+//	Dictionary<string, RaycastHit> _wallHits = new Dictionary<string, RaycastHit>;
+
 	float unitSpeed = 0f;
 	Vector3 unitPos = Vector3.zero;
 	Vector3 heading = Vector3.zero;
 
+	//Merge all raycasts into dicionary, or array or something and romove duplicates
 	//vision raycasts
 	RaycastHit centerVisRH;
 	RaycastHit rightPeRH;
 	RaycastHit leftPeRH;
 
 	//wall raycasts
+
 	RaycastHit frontWallRH;
 	RaycastHit rightWallRH;
 	RaycastHit backWallRH;
 	RaycastHit leftWallRH;
 
-	float moveSpeed = 0.1f;
+	float moveSpeed = 0.01f;
 
 	bool motion = false;
 	Vector2 motionDir = new Vector2(0, 0); //0 none, 1 forward, 2 right...
@@ -50,7 +55,7 @@ public class EnemyBrain : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update (){
 		VisionReciever();
 		Navigation();
 	}
@@ -62,13 +67,57 @@ public class EnemyBrain : MonoBehaviour {
 
 	void Navigation(){//Start making some if statements to direct how navigation works
 		//NEED TO INCORPERATE ROTATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//Navigation needs to move npc, rotate npc, detect if stuck, turn around, stop once in a while, look around, move towards other visible units.
+		// f, fR, fL, r, l, b, bR, bL, na
+		string wallDir = NPCAI.instance.WallAwareness(gameObject);
+		heading = IsWalled();
 		if(stop == false){
 			if(IsStuck() == false){
-				NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+				if(wallDir == "na"){
+					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+					return;
+				}
+				if(wallDir == "f"){
+					NPCAI.instance.RotationControl(gO, Vector3.right);
+					return;
+				}
+				if(wallDir == "fR"){
+					NPCAI.instance.RotationControl(gO, Vector3.left);
+					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+					return;
+				}
+				if(wallDir == "fL"){
+					NPCAI.instance.RotationControl(gO, Vector3.right);
+					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+					return;
+				}
+				if(wallDir == "r"){
+//					NPCAI.instance.RotationControl(gO, Vector3.left);
+					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+					return;
+				}
+				if(wallDir == "l"){
+//					NPCAI.instance.RotationControl(gO, Vector3.right);
+					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+					return;
+				}
+				if(wallDir == "b"){
+					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+					return;
+				}
+				if(wallDir == "bR"){
+					NPCAI.instance.RotationControl(gO, Vector3.left);
+					return;
+				}
+				if(wallDir == "bL"){
+					NPCAI.instance.RotationControl(gO, Vector3.right);
+					return;
+				}
 			}
 			else if(IsStuck() == true){
-				heading = IsWalled();
+//				heading = IsWalled();
 				NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+				return;
 			}
 		}
 	}
@@ -94,28 +143,41 @@ public class EnemyBrain : MonoBehaviour {
 //		if(gameObject.transform.position.x < unitPos.x)motionDir.x = 4;
 //		if(gameObject.transform.position.x == unitPos.x || gameObject.transform.position.y == unitPos.y)motionDir = new Vector2(0, 0);
 //	}
-
 	Vector3 IsWalled(){
 		Vector3 heading = Vector3.zero;
-		int wallDir = NPCAI.instance.WallAwareness(gameObject);
+		string wallDir = NPCAI.instance.WallAwareness(gameObject);
+		//needs to rotate instead of just shooting in a direction.
+		// f, fR, fL, r, l, b, bR, bL
 		switch(wallDir){
-		case 0:
+		case "na":
 			heading = gameObject.transform.up;
 			break;
-		case 1:	
+		case "f":
 			heading = -gameObject.transform.up;
 			break;
-		case 2:
+		case "fR":
+			heading = -gameObject.transform.up;
+			break;
+		case "fL":
+			heading = -gameObject.transform.up;
+			break;
+		case "r":
 			heading = -gameObject.transform.right;
 			break;
-		case 3:
-			heading = gameObject.transform.up;
-			break;
-		case 4:
+		case "l":
 			heading = gameObject.transform.right;
 			break;
+		case "b":
+			heading = gameObject.transform.up;
+			break;
+		case "bR":
+			heading = gameObject.transform.up;
+			break;
+		case "bL":
+			heading = gameObject.transform.up;
+			break;
 		}
-//		Debug.Log ("theres a wall at " + wallDir);
+		Debug.Log ("wall dir " + wallDir);
 		return heading;
 	}
 }
