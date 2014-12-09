@@ -73,44 +73,9 @@ public class EnemyBrain : MonoBehaviour {
 		heading = IsWalled();
 		if(stop == false){
 			if(IsStuck() == false){
-				if(wallDir == "na"){
-					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
-					return;
-				}
-				if(wallDir == "f"){
-					NPCAI.instance.RotationControl(gO, Vector3.right);
-					return;
-				}
-				if(wallDir == "fR"){
-					NPCAI.instance.RotationControl(gO, Vector3.left);
-					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
-					return;
-				}
-				if(wallDir == "fL"){
-					NPCAI.instance.RotationControl(gO, Vector3.right);
-					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
-					return;
-				}
-				if(wallDir == "r"){
-//					NPCAI.instance.RotationControl(gO, Vector3.left);
-					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
-					return;
-				}
-				if(wallDir == "l"){
-//					NPCAI.instance.RotationControl(gO, Vector3.right);
-					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
-					return;
-				}
-				if(wallDir == "b"){
-					NPCAI.instance.MoveControl(gO, heading, moveSpeed);
-					return;
-				}
-				if(wallDir == "bR"){
-					NPCAI.instance.RotationControl(gO, Vector3.left);
-					return;
-				}
-				if(wallDir == "bL"){
-					NPCAI.instance.RotationControl(gO, Vector3.right);
+				NPCAI.instance.MoveControl(gO, gameObject.transform.up, moveSpeed);
+				if(wallDir != "na"){
+					NPCAI.instance.RotationControl(gO, heading);
 					return;
 				}
 			}
@@ -156,10 +121,10 @@ public class EnemyBrain : MonoBehaviour {
 			heading = -gameObject.transform.up;
 			break;
 		case "fR":
-			heading = -gameObject.transform.up;
+			heading = -gameObject.transform.right;
 			break;
 		case "fL":
-			heading = -gameObject.transform.up;
+			heading = gameObject.transform.right;
 			break;
 		case "r":
 			heading = -gameObject.transform.right;

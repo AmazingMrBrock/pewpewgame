@@ -136,39 +136,39 @@ public class NPCAI : UnitTemplate {
 		//set to 0 all the time because there will always be a wall more than 0.55.
 		//ifs may not work. May need to use an array or list or something.
 		// f, fR, fL, r, l, b, bR, bL
-		if(frontWallRH.distance < 0.55f || rightWallRH.distance > 0.55f || leftWallRH.distance > 0.55f){
+		if(frontWallRH.distance < 1.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
 			wallDir = "f"; 
 			return wallDir;
 		}
-		if(frontWallRH.distance < 0.55f || leftWallRH.distance < 0.55f){
+		if(frontWallRH.distance < 1.55f && leftWallRH.distance < 1.55f){
 			wallDir = "fL";
 			return wallDir;
 		}
-		if(frontWallRH.distance < 0.55f || rightWallRH.distance < 0.55f){
+		if(frontWallRH.distance < 1.55f && rightWallRH.distance < 1.55f){
 			wallDir = "fR";
 			return wallDir;
 		}
-		if(rightWallRH.distance < 0.55f || frontWallRH.distance > 0.55f || backWallRH.distance > 0.55f){
+		if(rightWallRH.distance < 1.55f && frontWallRH.distance > 1.55f && backWallRH.distance > 1.55f){
 			wallDir = "l"; 
 			return wallDir;
 		}
-		if(leftWallRH.distance < 0.55f || frontWallRH.distance > 0.55f || backWallRH.distance > 0.55f){
+		if(leftWallRH.distance < 1.55f && frontWallRH.distance > 1.55f && backWallRH.distance > 1.55f){
 			wallDir = "r"; 
 			return wallDir;
 		}
-		if(backWallRH.distance < 0.55f || rightWallRH.distance > 0.55f || leftWallRH.distance > 0.55f){
+		if(backWallRH.distance < 1.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
 			wallDir = "b";
 			return wallDir;
 		}
-		if(backWallRH.distance < 0.55f || leftWallRH.distance < 0.55f){
+		if(backWallRH.distance < 1.55f && leftWallRH.distance < 1.55f){
 			wallDir = "bL";
 			return wallDir;
 		}
-		if(backWallRH.distance < 0.55f || rightWallRH.distance > 0.55f){
+		if(backWallRH.distance < 1.55f && rightWallRH.distance > 1.55f){
 			wallDir = "bR";
 			return wallDir;
 		}
-		if(frontWallRH.distance > 0.55f || backWallRH.distance > 0.55f || rightWallRH.distance > 0.55f || leftWallRH.distance > 0.55f){
+		if(frontWallRH.distance > 1.55f && backWallRH.distance > 1.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
 			wallDir = "na";
 			return wallDir;
 		}
