@@ -70,7 +70,7 @@ public class EnemyBrain : MonoBehaviour {
 		//Navigation needs to move npc, rotate npc, detect if stuck, turn around, stop once in a while, look around, move towards other visible units.
 		// f, fR, fL, r, l, b, bR, bL, na
 		string wallDir = NPCAI.instance.WallAwareness(gameObject);
-		heading = IsWalled();
+		heading = NPCAI.instance.IsWalled(gO);
 		if(stop == false){
 			if(IsStuck() == false){
 				NPCAI.instance.MoveControl(gO, gameObject.transform.up, moveSpeed);
@@ -81,7 +81,8 @@ public class EnemyBrain : MonoBehaviour {
 			}
 			else if(IsStuck() == true){
 //				heading = IsWalled();
-				NPCAI.instance.MoveControl(gO, heading, moveSpeed);
+				NPCAI.instance.MoveControl(gO, -gameObject.transform.up, moveSpeed);
+				NPCAI.instance.RotationControl(gO, gameObject.transform.up);
 				return;
 			}
 		}
@@ -108,41 +109,5 @@ public class EnemyBrain : MonoBehaviour {
 //		if(gameObject.transform.position.x < unitPos.x)motionDir.x = 4;
 //		if(gameObject.transform.position.x == unitPos.x || gameObject.transform.position.y == unitPos.y)motionDir = new Vector2(0, 0);
 //	}
-	Vector3 IsWalled(){
-		Vector3 heading = Vector3.zero;
-		string wallDir = NPCAI.instance.WallAwareness(gameObject);
-		//needs to rotate instead of just shooting in a direction.
-		// f, fR, fL, r, l, b, bR, bL
-		switch(wallDir){
-		case "na":
-			heading = gameObject.transform.up;
-			break;
-		case "f":
-			heading = -gameObject.transform.up;
-			break;
-		case "fR":
-			heading = -gameObject.transform.right;
-			break;
-		case "fL":
-			heading = gameObject.transform.right;
-			break;
-		case "r":
-			heading = -gameObject.transform.right;
-			break;
-		case "l":
-			heading = gameObject.transform.right;
-			break;
-		case "b":
-			heading = gameObject.transform.up;
-			break;
-		case "bR":
-			heading = gameObject.transform.up;
-			break;
-		case "bL":
-			heading = gameObject.transform.up;
-			break;
-		}
-		Debug.Log ("wall dir " + wallDir);
-		return heading;
-	}
+	
 }

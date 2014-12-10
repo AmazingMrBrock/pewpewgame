@@ -95,8 +95,8 @@ public class NPCAI : UnitTemplate {
 	public void RotationControl(GameObject gO, Vector3 rotDir){ //for direction 0 is right left is 1
 		//Rotates toward the target
 		//Works but screws up raycasts
-		float angle = Mathf.Atan2(leftPeRH.point.y, rightPeRH.point.x) * Mathf.Rad2Deg;
-		Quaternion targetRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
+		float angle = Mathf.Atan2(rotDir.y, rotDir.x) * Mathf.Rad2Deg;
+		Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
 		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 	}
 
@@ -176,5 +176,48 @@ public class NPCAI : UnitTemplate {
 //		Debug.Log ("frontwallrh " + frontWallRH.distance + "rightwallrh " + rightWallRH.distance + "backwallrh " + backWallRH.distance + "rightwallrh " + rightWallRH.distance);	
 //		Debug.Log ("walldir " + wallDir);
 
+	}
+
+	public Vector3 IsWalled(GameObject gO){
+		Vector3 heading = Vector3.zero;
+		string wallDir = WallAwareness(gO);
+		RaycastHit frontWallRH;
+		RaycastHit rightWallRH;
+		RaycastHit backWallRH;
+		RaycastHit leftWallRH;
+		WallCheck(gO, out frontWallRH, out rightWallRH, out backWallRH, out leftWallRH);
+
+		//needs to rotate instead of just shooting in a direction.
+		// f, fR, fL, r, l, b, bR, bL
+		switch(wallDir){
+		case "na":
+			heading = gO.transform.up;
+			break;
+		case "f":
+			heading = -gO.transform.up;
+			break;
+		case "fR":
+			heading = leftWallRH.point;
+			break;
+		case "fL":
+			heading = rightWallRH.point;
+			break;
+		case "r":
+			heading = leftWallRH.point;
+			break;
+		case "l":
+			heading = rightWallRH.point;
+			break;
+		case "b":
+			heading = gO.transform.up;
+			break;
+		case "bR":
+			heading = gO.transform.up;
+			break;
+		case "bL":
+			heading = gO.transform.up;
+			break;
+		}
+		return heading;
 	}
 }
