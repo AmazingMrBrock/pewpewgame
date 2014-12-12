@@ -26,8 +26,8 @@ public class NPCAI : UnitTemplate {
 	float distanceFromObject;
 
 	float sightRange = 100;
-	
-	RaycastHit targetInfo;
+	float cumuRotDir;
+
 	RaycastHit rightPeRH;
 	RaycastHit leftPeRH;
 	Vector3 lastPosition = Vector3.zero;
@@ -48,6 +48,7 @@ public class NPCAI : UnitTemplate {
 	}
 	//NEED TO COMBINE VISION THINGS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public RaycastHit VisionControl(GameObject gO){
+		RaycastHit targetInfo;
 		Ray ray = Raycaster.instance.TargetRay(gO, gO.transform.up);
 
 		//Center Line
@@ -73,7 +74,7 @@ public class NPCAI : UnitTemplate {
 	
 	void ObjRecognition(){
 		//Checks whats under the target ray.
-		string objTag = targetInfo.transform.tag;
+//		string objTag = targetInfo.transform.tag;
 //		Debug.Log ("target name: " + targetInfo.transform.name + " Target tag: " + objTag);
 		
 	}
@@ -92,12 +93,14 @@ public class NPCAI : UnitTemplate {
 		DirectionalMovement.instance.MoveToPoint(headingRH.point, speed, gO);//Works well. Any speed over .1 is too fast
 	}
 
-	public void RotationControl(GameObject gO, Vector3 rotDir){ //for direction 0 is right left is 1
+	public void RotationControl(GameObject gO, float rotDir){ //for direction 0 is right left is 1
 		//Rotates toward the target
 		//Works but screws up raycasts
-		float angle = Mathf.Atan2(rotDir.y, rotDir.x) * Mathf.Rad2Deg;
-		Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+//		float angle = Mathf.Atan2(rotDir.y, rotDir.x) * Mathf.Rad2Deg;
+//		Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+//		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+		cumuRotDir = cumuRotDir + rotDir;
+		gO.transform.Rotate(new Vector3(cumuRotDir, 0, 0), Time.deltaTime);
 	}
 
 	public float SpeedCheck(GameObject gO){
@@ -178,8 +181,8 @@ public class NPCAI : UnitTemplate {
 
 	}
 
-	public Vector3 IsWalled(GameObject gO){
-		Vector3 heading = Vector3.zero;
+	public float IsWalled(GameObject gO){
+		float rotDir = 10f;
 		string wallDir = WallAwareness(gO);
 		RaycastHit frontWallRH;
 		RaycastHit rightWallRH;
@@ -191,33 +194,34 @@ public class NPCAI : UnitTemplate {
 		// f, fR, fL, r, l, b, bR, bL
 		switch(wallDir){
 		case "na":
-			heading = gO.transform.up;
+			rotDir = 0f;
 			break;
 		case "f":
-			heading = -gO.transform.up;
+			rotDir = rotDir;
 			break;
 		case "fR":
-			heading = leftWallRH.point;
+			rotDir = -rotDir;
 			break;
 		case "fL":
-			heading = rightWallRH.point;
+			rotDir = rotDir;;
 			break;
 		case "r":
-			heading = leftWallRH.point;
+			rotDir = -rotDir;
 			break;
 		case "l":
-			heading = rightWallRH.point;
+			rotDir = rotDir;
 			break;
 		case "b":
-			heading = gO.transform.up;
+			rotDir = 0f;
 			break;
 		case "bR":
-			heading = gO.transform.up;
+			rotDir = 0f;
 			break;
 		case "bL":
-			heading = gO.transform.up;
+			rotDir = 0f;
 			break;
 		}
-		return heading;
+		Debug.Log ("rotdir " + rotDir);	
+		return rotDir;
 	}
 }

@@ -12,7 +12,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	float unitSpeed = 0f;
 	Vector3 unitPos = Vector3.zero;
-	Vector3 heading = Vector3.zero;
+	float heading = 10f;
 
 	//Merge all raycasts into dicionary, or array or something and romove duplicates
 	//vision raycasts
@@ -82,7 +82,7 @@ public class EnemyBrain : MonoBehaviour {
 			else if(IsStuck() == true){
 //				heading = IsWalled();
 				NPCAI.instance.MoveControl(gO, -gameObject.transform.up, moveSpeed);
-				NPCAI.instance.RotationControl(gO, gameObject.transform.up);
+				NPCAI.instance.RotationControl(gO, heading);
 				return;
 			}
 		}
