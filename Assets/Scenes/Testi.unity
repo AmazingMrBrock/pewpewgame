@@ -1366,6 +1366,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11400004, guid: 677bc800ed3ce27439c8bb84fa9d3907, type: 2}
+    - {fileID: 11400002, guid: 677bc800ed3ce27439c8bb84fa9d3907, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 677bc800ed3ce27439c8bb84fa9d3907, type: 2}
   m_RootGameObject: {fileID: 1720276178}
   m_IsPrefabParent: 0
@@ -2815,10 +2816,10 @@ GameObject:
   - 65: {fileID: 1720276180}
   - 23: {fileID: 1720276179}
   - 54: {fileID: 1720276183}
-  - 114: {fileID: 1720276185}
   - 114: {fileID: 1720276184}
   - 82: {fileID: 1720276187}
   - 114: {fileID: 1720276186}
+  - 114: {fileID: 1720276185}
   m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
@@ -2912,9 +2913,8 @@ MonoBehaviour:
 --- !u!114 &1720276185
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: 677bc800ed3ce27439c8bb84fa9d3907,
-    type: 2}
-  m_PrefabInternal: {fileID: 925379572}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1720276178}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -3244,6 +3244,7 @@ GameObject:
   - 4: {fileID: 1958423567}
   - 114: {fileID: 1958423569}
   - 114: {fileID: 1958423568}
+  - 114: {fileID: 1958423570}
   m_Layer: 0
   m_Name: _SystemControls
   m_TagString: Untagged
@@ -3287,6 +3288,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0}
+--- !u!114 &1958423570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1958423566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b10f6b23f9869cd4baebb2d0b9fa43ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1995519597
 GameObject:
   m_ObjectHideFlags: 0

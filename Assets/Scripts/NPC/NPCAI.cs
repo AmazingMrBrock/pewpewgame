@@ -99,8 +99,21 @@ public class NPCAI : UnitTemplate {
 //		float angle = Mathf.Atan2(rotDir.y, rotDir.x) * Mathf.Rad2Deg;
 //		Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
 //		gO.transform.rotation = Quaternion.Slerp(gO.transform.rotation, targetRotation, Time.deltaTime * 2.0f);
-		cumuRotDir = cumuRotDir + rotDir;
-		gO.transform.Rotate(new Vector3(cumuRotDir, 0, 0), Time.deltaTime);
+//		cumuRotDir = cumuRotDir + rotDir;
+//		gO.transform.Rotate(new Vector3(0, 0, cumuRotDir), Time.deltaTime);
+//		gO.transform.RotateAround(Vector3.zero, Vector3.forward, rotDir * Time.deltaTime f));
+
+
+		//Rotates toward the mouse
+		rigidbody.transform.eulerAngles = new Vector3(0,0,Mathf.Atan2((mousePosition.y - transform.position.y), (mousePosition.x - transform.position.x))*Mathf.Rad2Deg - 90);
+		
+		//Judge the distance from the object and the mouse
+		distanceFromObject = (Input.mousePosition - camera.WorldToScreenPoint(transform.position)).magnitude;
+		
+		//Move towards the mouse
+		//		rigidbody.AddForce(direction * speed * distanceFromObject * Time.deltaTime);
+
+		Debug.Log ("ROTATIONCONTROL");
 	}
 
 	public float SpeedCheck(GameObject gO){
@@ -139,39 +152,40 @@ public class NPCAI : UnitTemplate {
 		//set to 0 all the time because there will always be a wall more than 0.55.
 		//ifs may not work. May need to use an array or list or something.
 		// f, fR, fL, r, l, b, bR, bL
-		if(frontWallRH.distance < 1.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
-			wallDir = "f"; 
+		if(frontWallRH.distance < 2.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
+			wallDir = "f";
+			if(frontWallRH.distance < 2.55f && leftWallRH.distance < 1.55f){
+				wallDir = "fR";
+				return wallDir;
+			}
+			if(frontWallRH.distance < 2.55f && rightWallRH.distance < 1.55f){
+				wallDir = "fL";
+				return wallDir;
+			}
 			return wallDir;
 		}
-		if(frontWallRH.distance < 1.55f && leftWallRH.distance < 1.55f){
-			wallDir = "fL";
-			return wallDir;
-		}
-		if(frontWallRH.distance < 1.55f && rightWallRH.distance < 1.55f){
-			wallDir = "fR";
-			return wallDir;
-		}
-		if(rightWallRH.distance < 1.55f && frontWallRH.distance > 1.55f && backWallRH.distance > 1.55f){
+
+		if(rightWallRH.distance < 1.55f && frontWallRH.distance > 2.55f && backWallRH.distance > 2.55f){
 			wallDir = "l"; 
 			return wallDir;
 		}
-		if(leftWallRH.distance < 1.55f && frontWallRH.distance > 1.55f && backWallRH.distance > 1.55f){
+		if(leftWallRH.distance < 1.55f && frontWallRH.distance > 2.55f && backWallRH.distance > 2.55f){
 			wallDir = "r"; 
 			return wallDir;
 		}
-		if(backWallRH.distance < 1.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
+		if(backWallRH.distance < 2.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
 			wallDir = "b";
 			return wallDir;
 		}
-		if(backWallRH.distance < 1.55f && leftWallRH.distance < 1.55f){
+		if(backWallRH.distance < 2.55f && leftWallRH.distance < 1.55f){
 			wallDir = "bL";
 			return wallDir;
 		}
-		if(backWallRH.distance < 1.55f && rightWallRH.distance > 1.55f){
+		if(backWallRH.distance < 2.55f && rightWallRH.distance > 1.55f){
 			wallDir = "bR";
 			return wallDir;
 		}
-		if(frontWallRH.distance > 1.55f && backWallRH.distance > 1.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
+		if(frontWallRH.distance > 2.55f && backWallRH.distance > 2.55f && rightWallRH.distance > 1.55f && leftWallRH.distance > 1.55f){
 			wallDir = "na";
 			return wallDir;
 		}
@@ -182,7 +196,7 @@ public class NPCAI : UnitTemplate {
 	}
 
 	public float IsWalled(GameObject gO){
-		float rotDir = 10f;
+		float rotDir = 100f;
 		string wallDir = WallAwareness(gO);
 		RaycastHit frontWallRH;
 		RaycastHit rightWallRH;

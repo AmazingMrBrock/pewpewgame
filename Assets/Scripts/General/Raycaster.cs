@@ -26,7 +26,7 @@ public class Raycaster : MonoBehaviour {
 	float hitDistance;
 	Vector3 hitPoint;
 
-	public static RaycastHit[] hitInfo = new RaycastHit[18]; //the size of the array decides how many rays to fire.
+//	public static RaycastHit[] hitInfo = new RaycastHit[18]; //the size of the array decides how many rays to fire.
 	
 	// Use this for initialization
 	void Awake () {

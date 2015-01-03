@@ -12,7 +12,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	float unitSpeed = 0f;
 	Vector3 unitPos = Vector3.zero;
-	float heading = 10f;
+	float heading = 25f;
 
 	//Merge all raycasts into dicionary, or array or something and romove duplicates
 	//vision raycasts
@@ -72,9 +72,15 @@ public class EnemyBrain : MonoBehaviour {
 		string wallDir = NPCAI.instance.WallAwareness(gameObject);
 		heading = NPCAI.instance.IsWalled(gO);
 		if(stop == false){
+			if(wallDir != "na"){
+				Debug.Log("waldir = " + wallDir);
+				NPCAI.instance.RotationControl(gO, heading);
+//				return;
+			}
 			if(IsStuck() == false){
 				NPCAI.instance.MoveControl(gO, gameObject.transform.up, moveSpeed);
 				if(wallDir != "na"){
+					Debug.Log("waldir = " + wallDir);
 					NPCAI.instance.RotationControl(gO, heading);
 					return;
 				}
@@ -83,6 +89,7 @@ public class EnemyBrain : MonoBehaviour {
 //				heading = IsWalled();
 				NPCAI.instance.MoveControl(gO, -gameObject.transform.up, moveSpeed);
 				NPCAI.instance.RotationControl(gO, heading);
+
 				return;
 			}
 		}
